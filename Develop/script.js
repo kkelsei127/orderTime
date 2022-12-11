@@ -1,6 +1,6 @@
 //global variables
-var saveButton = $('#hour');
-
+var saveButton = document.querySelectorAll('button')
+var timeBlockEl = document.querySelectorAll('#col-2 col-md-1 hour text-center py-3')
 
 // Wrap all code that interacts with the DOM in a call to jQuery to ensure that
 // the code isn't run until the browser has finished rendering all the elements
@@ -8,17 +8,19 @@ var saveButton = $('#hour');
 
 
 $(function () {
-    //TODO Step1: Add a listener for click events on the save button. This code should use the id in the containing time-block as a key to save the user input in local storage.
+    //COMPLETED Step1: Add a listener for click events on the save button. This code should use the id in the containing time-block as a key to save the user input in local storage.
         //HINT:
         //What does `this` reference in the click listener function? 
         //How can DOM traversal be used to get the "hour-x" id of the time-block containing the button that was clicked?
         //How might the id be useful when saving the description in local storage?
+    for (i of saveButton) {
+        //THIS ALLOWS ALL CLICK EVENTS TO BE REGISTERED
+        i.addEventListener('click', function(event) {
+            //THIS TARGETS THE DIV ID FOR THE ROW CLICKED (EX HOUR-13)
+            console.log(event.target.parentElement.id)
+        })
+    }
     
-    //this needs to save currently does not traverse the dom
-    saveButton.on('click', function(event) {
-        console.log('clicked!')
-        event.preventDefault
-    });
         
     //TODO Step2: Add code to apply the past, present, or future class to each time block by comparing the id to the current hour.
         //HINTS:
@@ -28,11 +30,10 @@ $(function () {
     //checks time to change timeblock color
     var checkTime = function() {
         //gets current time
-        var currentTime = moment().format('H');
+        var currentTime = dayjs().hour();
         console.log(currentTime)
         //gets timeBlockEl with class
-        var timeBlockEl = $('.textarea');
-        console.log(timeBlockEl[14])
+        var timeBlockEl = $('timeBlockEl'.id);
 
         for (var i = 0; i < timeBlockEl.length; i++) {
             //gets element id as a string
@@ -59,7 +60,7 @@ $(function () {
     }
     //this should recheck the time every 5 minutes
     setInterval(checkTime(), (1000 * 60) * 5);
-    console.log(timeBlockEl[14].id)
+    
 
 
     //TODO Step3: Add code to get any user input that was saved in localStorage and set the values of the corresponding textarea elements.
