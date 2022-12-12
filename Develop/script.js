@@ -1,6 +1,8 @@
 //global variables
 var saveButton = document.querySelectorAll('button')
-var timeBlockEl = document.querySelectorAll('#col-2 col-md-1 hour text-center py-3')
+var eventText = document.querySelectorAll('textarea')
+
+var events = []
 
 // Wrap all code that interacts with the DOM in a call to jQuery to ensure that
 // the code isn't run until the browser has finished rendering all the elements
@@ -8,19 +10,29 @@ var timeBlockEl = document.querySelectorAll('#col-2 col-md-1 hour text-center py
 
 
 $(function () {
-    //COMPLETED Step1: Add a listener for click events on the save button. This code should use the id in the containing time-block as a key to save the user input in local storage.
+    //Completed Step1: Add a listener for click events on the save button. This code should use the id in the containing time-block as a key to save the user input in local storage.
         //HINT:
         //What does `this` reference in the click listener function? 
         //How can DOM traversal be used to get the "hour-x" id of the time-block containing the button that was clicked?
         //How might the id be useful when saving the description in local storage?
-    for (i of saveButton) {
+    
+        for (i of saveButton) {
         //THIS ALLOWS ALL CLICK EVENTS TO BE REGISTERED
         i.addEventListener('click', function(event) {
             //THIS TARGETS THE DIV ID FOR THE ROW CLICKED (EX HOUR-13)
             console.log(event.target.parentElement.id)
+
+            var eventInfo = {
+                timeSlot: (event.target.parentElement.id),
+                //this gets the clicked save buttons parent elements 2nd child (aka the text box) input
+                eventDesc: (event.target.parentElement.children[1]).value
+            }
+            console.log(eventInfo)
+            localStorage.setItem('eventInfo', JSON.stringify(eventInfo))
+            
         })
-    }
-    
+        }
+
         
     //TODO Step2: Add code to apply the past, present, or future class to each time block by comparing the id to the current hour.
         //HINTS:
@@ -33,27 +45,34 @@ $(function () {
         var currentTime = dayjs().hour();
         console.log(currentTime)
         //gets timeBlockEl with class
-        var timeBlockEl = $('timeBlockEl'.id);
+        var timeBlockEl = document.getElementsByClassName('time-block');
+
+        console.log(timeBlockEl)
 
         for (var i = 0; i < timeBlockEl.length; i++) {
             //gets element id as a string
-            var elementID = timeBlockEl[i].id;
+            var elementID = timeBlockEl.id;
             console.log(elementID)
+            console.log(currentTime)
+            console.log(timeBlockEl.length)
             //get element by ID
-            var changeID = document.getElementById(timeBlockEl[i].id)
+            // var changeID = document.getElementById(timeBlockEl)
 
             //remove any old classes from element
-            $(timeBlockEl[i].id).removeClass('.present .past .future');
+            // $(timeBlockEl[i]).removeClass('.present .past .future');
 
             //apply new class if task is present/past/future
             if(elementID < currentTime) {
-                $(changeID).addClass('past');
+                $(timeBlockEl).addClass('past');
             }
-            else if (elementID > currentTime) {
-                $(changeID).addClass('future');
-            }
+            else if (elementID == currentTime) {
+                $(timeBlockEl).removeClass('past');
+                $(timeBlockEl).addClass('present');
+            }    
             else {
-                $(changeID).addClass('present');
+                $(timeBlockEl).removeClass('past');
+                $(timeBlockEl).removeClass('present');
+                $(timeBlockEl).addClass('future');
             }
             
         }
@@ -65,13 +84,13 @@ $(function () {
 
     //TODO Step3: Add code to get any user input that was saved in localStorage and set the values of the corresponding textarea elements.
         //HINT: How can the id attribute of each time-block be used to do this?
-        
+    
+    
    
     // COMPLETED Step4: Add code to display the current date in the header of the page.
     //Displays the current time in the format: month:day:year hours:minutes am/pm
     var time = dayjs().format('MMM D, YYYY, hh:mm a');
     $('#currentDay').text(time);
 
-  });
+})
   
-// checkTime every 5 minutes
