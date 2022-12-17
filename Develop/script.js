@@ -9,7 +9,8 @@ var timeBlockEl = Array.from(document.getElementsByClassName('time-block'));
 // in the html.
 
 
-$(function () {
+$(function (event) {
+    event.preventDefault
     //Completed Step1: Add a listener for click events on the save button. This code should use the id in the containing time-block as a key to save the user input in local storage.
         //HINT:
         //What does `this` reference in the click listener function? 
@@ -68,26 +69,20 @@ $(function () {
     
 
 
-    //TODO Step3: Add code to get any user input that was saved in localStorage and set the values of the corresponding textarea elements.
+    //COMPLETE! Step3: Add code to get any user input that was saved in localStorage and set the values of the corresponding textarea elements.
         //HINT: How can the id attribute of each time-block be used to do this?
     
-        for (let i = 9; i <= 16 ; i++){
-            var inputList = document.querySelector('#input')
-            inputList.innerHTML = "";
-            //eventID = timeBlockEl[i].id
-            var item = (localStorage.getItem([i]))
-
-            
-            var input = item;
-            input.textContent = item
-
-            input.append(item)
-
-
-            
-        }
-        
+        // this gets your saved items from local storage
+        $('#9 .description').val(localStorage.getItem('9'))
+        $('#10 .description').val(localStorage.getItem('10'))
+        $('#11 .description').val(localStorage.getItem('11'))
+        $('#12 .description').val(localStorage.getItem('12'))
+        $('#13 .description').val(localStorage.getItem('13'))
+        $('#14 .description').val(localStorage.getItem('14'))
+        $('#15 .description').val(localStorage.getItem('15'))
+        $('#16 .description').val(localStorage.getItem('16'))
    
+
     // COMPLETED Step4: Add code to display the current date in the header of the page.
     //Displays the current time in the format: month:day:year hours:minutes am/pm
     var time = dayjs().format('MMM D, YYYY, hh:mm a');
